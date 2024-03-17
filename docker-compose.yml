@@ -1,0 +1,41 @@
+version: '2'
+services:
+  meet-backend:
+    build: ../meet-backend/
+    depends_on:
+      - meet-db
+    ports:
+      - "8080:8080"
+    networks:
+      - meet-network
+    command: ['npm', 'start']
+  meet-admin-backend:
+    build: ../meet-admin-backend/
+    depends_on:
+      - meet-db
+    ports:
+      - "8081:8081"
+    networks:
+      - meet-network
+    command: ['npm', 'start']
+  meet-db:
+    image: cassandra
+    ports:
+      - "9042:9042"
+    environment:
+      CASSANDRA_CLUSTER_NAME: meet-db-cluster
+      CASSANDRA_DC: meet-dc
+      CASSANDRA_RACK: meet-rack
+
+    networks:
+      - meet-network
+    restart: always
+    volumes:
+      - meet-db-data:/var/lib/cassandra
+networks:
+  meet-network:
+    driver: bridge
+
+volumes:
+  meet-db-data:
+    driver: local
