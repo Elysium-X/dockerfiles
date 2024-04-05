@@ -19,19 +19,17 @@ services:
       - meet-network
     command: ['npm', 'start']
   meet-db:
-    image: cassandra
+    image: mongo
     ports:
-      - "9042:9042"
+      - "27017:27017"
     environment:
-      CASSANDRA_CLUSTER_NAME: meet-db-cluster
-      CASSANDRA_DC: meet-dc
-      CASSANDRA_RACK: meet-rack
-
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
     networks:
       - meet-network
     restart: always
     volumes:
-      - meet-db-data:/var/lib/cassandra
+      - meet-db-data:/var/lib/mongodb
 networks:
   meet-network:
     driver: bridge
