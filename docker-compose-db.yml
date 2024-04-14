@@ -1,0 +1,16 @@
+version: '2'
+services:
+  mongodb:
+    image: mongo
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: test
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    restart: always
+    volumes:
+      - meet-db-data:/var/lib/mongodb
+volumes:
+  meet-db-data:
+    driver: local
