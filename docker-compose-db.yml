@@ -1,16 +1,33 @@
 version: '2'
 services:
-  mongodb:
-    image: mongo
+  mysql:
+    image: mysql
     ports:
-      - "27017:27017"
+      - "3306:3306"
     environment:
-      MONGO_INITDB_DATABASE: test
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
+      MYSQL_DATABASE: 'db'
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'password'
+      MYSQL_ROOT_PASSWORD: 'password'
     restart: always
+    expose:
+      - 3306
     volumes:
-      - meet-db-data:/var/lib/mongodb
+      - meet-db-data:/var/lib/mysql
+  minio-storage:
+    image: docker.io/bitnami/minio:latest
+    ports:
+      - '9000:9000'
+      - '9001:9001'
+    volumes:
+      - minio_data:/data
+    environment:
+      - MINIO_ROOT_USER=admin
+      - MINIO_ROOT_PASSWORD=adminpass
+      - MINIO_DEFAULT_BUCKETS=defaultbucket
+
 volumes:
   meet-db-data:
+    driver: local
+  minio_data:
     driver: local
